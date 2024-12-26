@@ -1,0 +1,151 @@
+class Computer {
+    
+    //The Computer class will represent an AI opponent in the Battleship game, 
+    //responsible for placing its ships and deciding on attack moves.
+
+    field Player player;      // Represents the computer's player grid and ships
+    field Array attackGrid;   // A grid to track the computer's previous attacks
+    field int gridSize;       // Size of the grid
+
+
+    // Constructor
+    constructor Computer new(int num_ships, int board_size){
+        let player = Player.new(num_ships, board_size);
+        let attackGrid = Grid.new(board_size);
+        let gridSize = board_size;
+        do Random.setSeed(12345);
+        return this;
+    }
+
+    // Places ships for the computer
+    method void placeShipsAutomatically(){
+        var int i, startX, startY, ship_count;
+        var boolean vertical;
+        var Ship ship;
+        var Grid player_grid;
+        var Array ships; 
+        let ships = player.getShips();
+        let i = 0;
+        let ship_count = player.getShipNumber();
+        let player_grid = player.getPlayerGrid();
+        while (i< ship_count){
+                // Randomly generate a starting position and orientation
+            let startX = Random.randRange(gridSize - 1); // Random x-coordinate
+            let startY = Random.randRange(gridSize - 1); // Random y-coordinate
+            let vertical = (Random.randRange(1) = 0);  // Randomly choose vertical or horizontal
+            let ship = Ship.new(i+2); //creates ships in diffrenet sizes
+            // Check if the ship can be placed
+            if(player_grid.canPlaceShip(startX, startY, ship.getSize(), vertical)){
+                //place the ship
+                do player_grid.placeShip(startX, startY, ship.getSize(), vertical);
+                // Set the ship's coordinates
+                do ship.setCoordinates(startX, startY, vertical);
+                // Add the ship to the player's fleet
+                do player.placeShip(ship, startX, startY, vertical);
+                // Move to the next ship
+                let i = i + 1;  
+            }}
+            do Output.printString("array of ships: ");
+            let i = 0;
+            while (i <3){
+                do Output.printString("in while");
+                do Output.printInt(ships[i]);
+                let i = i+1;
+            }
+            return;
+            }
+
+    // Makes an attack move
+    method Array makeMove(){
+        var int x, y;
+        var boolean validMove;
+        var Array move;
+        let move = Array.new(2); // Create an array to hold [x, y]
+        let validMove = false;
+        while (~validMove) {
+                // Generate random coordinates
+            let x = Random.randRange(gridSize - 1); // Random x-coordinate
+            let y = Random.randRange(gridSize - 1); // Random y-coordinate
+            // Check if the attack is valid
+            if (isValidAttack(x, y)) {
+                let validMove = true; // Found a valid move
+            }
+        }
+        // Store the valid coordinates in the array
+        let move[0] = x; // x-coordinate
+        let move[1] = y; // y-coordinate
+        return move; // Return the move as an array
+    }
+
+    // Checks if a cell is a valid attack
+    method boolean isValidAttack(int x, int y){
+        var int i; 
+        var int ship_count;
+        var Ship currentShip; 
+        var Array ships;
+        let ship_count = player.getShipNumber();
+        let i = 0; 
+        let ships = player.getShips();
+        if (~(attackGrid[y * gridSize + x]) = 0) { // 0 means not attacked- if the cell is not 0-return false
+                return false; // Valid attack
+        }
+        while( i< ship_count){
+             let currentShip = ships[i];
+             if (~(currentShip = null)) { // Check if the ship exists
+             if (currentShip.isHit(x, y)) { // If the cell belongs to this ship
+                return false; // Invalid attack, it's part of the computer's own ship
+            }
+        }
+            let i = i + 1;
+        }
+        return true;
+    }
+    
+    // Marks the result of an attack
+    //The attackGrid is a 1D array used to track the results of the computer's attacks on the game grid:
+    //0: The cell has not been attacked.
+    //1: The attack on this cell was a miss.
+    //2: The attack on this cell was a hit.
+    //This array helps ensure the computer doesn't repeat attacks on the same cell and updates the attack results accordingly.
+    method void markAttackResult(int x, int y, boolean isHit){
+        if (isHit){
+            let attackGrid[y*gridSize +x] = 2;
+        }
+        else{
+            let attackGrid[y*gridSize +x] = 1;
+        }
+        return;
+    }
+
+    // Checks if the computer has remaining ships
+    method boolean hasShipsRemaining(){
+        var int i, ship_count;
+        var Ship currentShip;
+        var Array ships;
+        let ship_count = player.getShipNumber();
+        let i = 0;
+        let ships = player.getShips();
+        while (i < ship_count) {
+            let currentShip = ships[i];
+            if (~(currentShip= null)) { // Check if the ship exists
+                if (~(currentShip.isSunk())) { // If the ship is not sunk
+                    return true;
+                }
+            }
+            let i = i + 1;
+        }
+        return false; // All ships are sunk
+    }
+
+    // Displays the computer's grid (optional, for debugging)
+    method void displayGrid(){
+        var Grid player_grid;
+        let player_grid = player.getPlayerGrid();
+        do player_grid.displayGrid();
+        return;
+    }
+
+    method Player getComputerPlayer(){
+        return player;
+    }
+}

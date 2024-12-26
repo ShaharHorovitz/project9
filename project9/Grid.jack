@@ -1,0 +1,169 @@
+class Grid {
+    //The Grid class in the Battleship game is responsible for managing the game board for either the player or the computer. 
+    //It represents the grid where ships are placed, and it tracks hits, misses, and ship positions during gameplay.
+    
+    field Array board; // A 1D array representing the 5x5 grid
+    field int size;    // Grid size ( 5x5)
+
+    constructor Grid new(int gridSize) {
+        let board = Array.new(gridSize*gridSize); //creats te board as a 1D array 
+        let size = gridSize; 
+        return this; //return the instance 
+    }
+
+    method int getSize(){
+        return size;
+    }
+
+    method boolean canPlaceShip(int startX, int startY, int length, boolean vertical) {
+    //creates a function that check if a ship can be placed in the wanted position
+    var int i;
+    // Check bounds
+    if (vertical) {
+        if ((startY + length - 1) > size | (startY + length - 1) = size  ) { // Ship extends beyond the bottom of the grid
+            return false;
+        }
+    } else {
+        if ((startX + length - 1) > size | (startX + length - 1) = size) { // Ship extends beyond the right side of the grid
+            return false;
+        }
+    }
+    // Check overlap
+    let i = 0;
+    while (i < length) {
+        if (vertical) {
+            if (board[(startY + i) * size + startX] > 0) { // Cell is already occupied
+                return false;
+            }
+        } else {
+            if (board[startY * size + startX + i] > 0) { // Cell is already occupied
+                return false;
+            }
+        }
+        let i = i + 1;
+    }
+    return true; // Placement is valid
+}
+
+
+
+    //Places a ship on the grid
+    method void placeShip(int startX, int startY, int length, boolean vertical) {
+        var int i;
+        if (canPlaceShip(startX, startY, length, vertical)){
+            let i = 0; 
+            while (i < 0){
+                if(vertical){
+                    let board[(startY + i) * size + startX] = 1; // Mark cells vertically
+                }
+                else{
+                    let board[(startY + i) * size + startX] = 1; // Mark cells vertically
+                }
+                let i = i+1; 
+            }
+             //do Output.printString(startX); // Unattacked cell
+             //do Output.printString(startY); // Unattacked cell
+             //do Output.printString(board[startY*size+startX]); // Unattacked cell
+            return;
+        }
+        return; 
+    }
+
+    // Checks if a cell is a hit
+    method boolean isHit(int x, int y) {
+        if (board[(y * size) + x] = 1){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    // Marks a cell as a hit
+    method void markHit(int x, int y) {
+        let board[y * size + x] = 2;
+        return ; 
+    }
+
+    // Marks a cell as a miss
+    method void markMiss(int x, int y) {
+        let board[y * size + x] = 3;
+        return ; 
+    }
+
+    // Checks if there are ships remaining on the grid
+    method boolean hasShipsRemaining() {
+        var int i; 
+        let i = 0; 
+        while (i < size*size){
+            if (board[i] =1){
+                return true;
+            }
+            let i = i+1; 
+        }
+        return false; 
+    }
+
+    // Displays the grid (optional, for debugging purposes)
+    method void displayGrid() {
+    var int cellSize; // Size of each cell (in pixels)
+    var int i, j;     // Iterators for rows and columns
+    var int x, y;     // Top-left corner of the cell
+    var int cellValue; // Value of the current cell
+
+    let cellSize = 10; // For a 5x5 grid, ensure each cell is 50x50 pixels
+    let i = 0;
+
+    // Draw the grid
+    while (i < size) { // Loop through rows
+        let j = 0;
+        while (j < size) { // Loop through columns
+            let x = j * cellSize; // X-coordinate of the cell
+            let y = i * cellSize; // Y-coordinate of the cell
+
+            // Draw the cell border
+            do Screen.setColor(true); // Set color to white
+            do Screen.drawRectangle(x, y, x + cellSize-1, y + cellSize-1);
+
+            // Get the cell value
+            let cellValue = board[i * size + j];
+
+            // Display the content in the cell
+            if (cellValue = 0) {
+                do Output.printString("."); // Unattacked cell
+            } 
+            if (cellValue = 1) {
+                do Output.printString("M"); // Miss
+            }
+            if (cellValue = 2) {
+                do Output.printString("H"); // Hit
+            } else {
+                do Output.printString("?"); // Unknown state
+            }
+
+            let j = j + 1; // Move to the next column
+        }
+        let i = i + 1; // Move to the next row
+    }
+
+    return;
+}
+
+
+    // Gets the state of a specific cell on the grid (optional)
+    method int getCellState(int x, int y) {
+        return board[y * size + x]; 
+    }
+
+    // Resets the grid (optional, for reuse)
+    method void resetGrid() {
+        var int i; 
+        let i = 0; 
+        while (i < size*size){
+            let board[i] = 0; 
+            let i = i+1; 
+        }
+        return; 
+    }
+
+}

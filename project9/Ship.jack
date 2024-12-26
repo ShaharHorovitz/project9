@@ -1,0 +1,102 @@
+class Ship {
+    //The Ship class represents a ship in the Battleship game. It manages the ship's attributes, such as:
+    //Size: The number of cells the ship occupies.
+    //Coordinates: The grid cells where the ship is placed.
+    //Hit Status: Tracks which parts of the ship have been hit.
+    //he class provides methods to set the ship's position, check if it has been hit, mark hits, and determine if it has been sunk.
+
+    // Fields
+    field int ship_size;          // Size of the ship
+    field Array coordinates; // Coordinates occupied by the ship
+    field Array hits;        // Tracks hits on the ship
+
+    // Constructor
+    constructor Ship new(int size) {
+        let ship_size = size; 
+        let coordinates = Array.new(size);
+        let hits = Array.new(size);
+        return this; 
+    }
+
+    // Sets the ship's coordinates
+    method void setCoordinates(int startX, int startY, boolean vertical) {
+        //The ship's coordinates are stored as encoded integers in the format y * 100 + x, where y is the row and x is the column. To decode:
+        //Row (y): Use coordinate / 100.
+        //Column (x): Use coordinate % 100.
+        
+        var int i; 
+        let i = 0;
+        while (i < ship_size){
+            if (vertical){
+                let coordinates[i] = (startY + i) * 100 + startX;
+            }
+            else{
+                let coordinates[i] = startY * 100 + (startX + i);
+            }
+            let i = i+1; 
+        }
+        return;
+    }
+
+    // Checks if a cell hits the ship and marks the cell as hit
+    method boolean isHit(int x, int y) {
+        var int i; 
+        var int x_ship; 
+        var int y_ship;
+        let x_ship = 0;
+        let y_ship = 0;
+        let i =0; 
+        while (i < ship_size){
+            let x_ship = coordinates[i] - ((coordinates[i] / 100) * 100);
+            let y_ship = coordinates[i] / 100;
+            if ((x_ship = x) & (y_ship = y)){
+                let hits[i] = 1; // Mark this part of the ship as hit
+                return true;
+            }
+            let i = i+1;
+        }
+        return false; 
+    }
+
+    // Checks if the ship is sunk
+    method boolean isSunk() {
+        var int i;
+        var int count;
+        let i = 0;
+        let count =0; 
+        while (i < ship_size){
+            if(hits[i] = 1){
+                let count = count +1; 
+            }
+            let i = i+1;
+        }
+        if (count = ship_size){
+            return true;  //ship is sunk
+        }
+        else{
+            return false; //ship is not sunk
+        }
+    }
+
+    // Returns the size of the ship
+    method int getSize() {
+        return ship_size; 
+    }
+
+    // (Optional) Gets the ship's coordinates
+    method Array getCoordinates() {
+        return coordinates; // Placeholder
+    }
+
+    // (Optional) Resets the ship's state
+    method void reset() {
+        var int i;
+        let i =0;
+        while (i < ship_size){
+            let hits[i] = 0;
+            let coordinates[i] =0;
+            let i = i+1;
+        }
+        return;
+    }
+}

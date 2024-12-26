@@ -1,0 +1,230 @@
+function Ship.new 0
+    push constant 3
+    call Memory.alloc 1
+    pop pointer 0
+    push argument 0
+    pop this 0
+    push argument 0
+    call Array.new 1
+    pop this 1
+    push argument 0
+    call Array.new 1
+    pop this 2
+    push pointer 0
+    return
+function Ship.setCoordinates 1
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Ship_0
+    push local 0
+    push this 0
+    lt
+    not
+    if-goto Ship_1
+    push argument 3
+    not
+    if-goto Ship_3
+    push local 0
+    push this 1
+    add
+    push argument 2
+    push local 0
+    add
+    push constant 100
+    call Math.multiply 2
+    push argument 1
+    add
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    goto Ship_2
+label Ship_3
+    push local 0
+    push this 1
+    add
+    push argument 2
+    push constant 100
+    call Math.multiply 2
+    push argument 1
+    push local 0
+    add
+    add
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+label Ship_2
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Ship_0
+label Ship_1
+    push constant 0
+    return
+function Ship.isHit 3
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 1
+    push constant 0
+    pop local 2
+    push constant 0
+    pop local 0
+label Ship_4
+    push local 0
+    push this 0
+    lt
+    not
+    if-goto Ship_5
+    push local 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    push local 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    push constant 100
+    call Math.divide 2
+    push constant 100
+    call Math.multiply 2
+    sub
+    pop local 1
+    push local 0
+    push this 1
+    add
+    pop pointer 1
+    push that 0
+    push constant 100
+    call Math.divide 2
+    pop local 2
+    push local 1
+    push argument 1
+    eq
+    push local 2
+    push argument 2
+    eq
+    and
+    not
+    if-goto Ship_7
+    push local 0
+    push this 2
+    add
+    push constant 1
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push constant 1
+    neg
+    return
+    goto Ship_6
+label Ship_7
+label Ship_6
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Ship_4
+label Ship_5
+    push constant 0
+    return
+function Ship.isSunk 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+    push constant 0
+    pop local 1
+label Ship_8
+    push local 0
+    push this 0
+    lt
+    not
+    if-goto Ship_9
+    push local 0
+    push this 2
+    add
+    pop pointer 1
+    push that 0
+    push constant 1
+    eq
+    not
+    if-goto Ship_11
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto Ship_10
+label Ship_11
+label Ship_10
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Ship_8
+label Ship_9
+    push local 1
+    push this 0
+    eq
+    not
+    if-goto Ship_13
+    push constant 1
+    neg
+    return
+    goto Ship_12
+label Ship_13
+    push constant 0
+    return
+label Ship_12
+function Ship.getSize 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    return
+function Ship.getCoordinates 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    return
+function Ship.reset 1
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Ship_14
+    push local 0
+    push this 0
+    lt
+    not
+    if-goto Ship_15
+    push local 0
+    push this 2
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push this 1
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Ship_14
+label Ship_15
+    push constant 0
+    return

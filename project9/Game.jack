@@ -1,0 +1,141 @@
+class Game {
+    // Fields
+    field Player player;        // Represents the human player
+    field Computer computer;    // Represents the computer opponent
+    field int gridSize;         // Size of the game grid
+    field boolean gameOver;     // Tracks if the game is over
+
+    // Constructor
+    constructor Game new(int num_ships, int board_size){
+        let gridSize = board_size;
+        let gameOver = false;
+        let player = Player.new(num_ships, board_size);
+        let computer = Computer.new(num_ships, board_size);
+        return this;
+    }
+
+    // Initializes the game
+    method boolean initialize(Array player_coordinates){
+        var int i, startX, startY, shipSize;
+        var int check_vertical;
+        var boolean vertical;
+        var Ship ship;
+        var Grid player_grid;
+        let i = 0;
+        let player_grid = player.getPlayerGrid();
+        while (i < player.getShipNumber()) {
+            let shipSize = i + 2; // Example: Ship sizes increase with i
+            let ship = Ship.new(shipSize);
+            // Decode the coordinates from the playerCoordinates array
+            let startY = player_coordinates[i] / 100;   // Extract X coordinate
+            let startX = (player_coordinates[i] - ((player_coordinates[i] / 100) * 100)) / 10; // Extract Y coordinate
+            let check_vertical = (player_coordinates[i] - ((player_coordinates[i] / 10) * 10)) ; // Extract orientation
+            if (check_vertical =1){
+                let vertical = true;
+            }
+            else{
+                let vertical = false;
+            }
+            // Check if the ship can be placed
+            if (player_grid.canPlaceShip(startX, startY, shipSize, vertical)) {
+                // Place the ship
+                do player_grid.placeShip(startX, startY, shipSize, vertical);
+                do ship.setCoordinates(startX, startY, vertical);
+                do player.placeShip(ship, startX, startY, vertical);
+                let i = i + 1; // Move to the next ship
+            }   
+            else {
+                return false; //if player cant place the ship, can't initilazie the game
+            }
+            let i = i+1;
+        }
+        // Let the computer place its ships automatically
+        do computer.placeShipsAutomatically();
+        return true;
+        }
+
+
+    // Plays a single turn for the player
+    method boolean playerTurn(int x,int y){
+        var Player computer_player;
+        var boolean isHit;
+        let isHit = false;
+        let computer_player = computer.getComputerPlayer();
+        if (player.isValidAttack(x, y)) {
+            // Check if the attack hit a ship on the computer's grid
+            if (computer_player.isHit(x, y)) {
+                let isHit = true;
+                do computer_player.markHit(x, y); // Mark the cell as hit on the computer's grid
+                do Output.printString("good job! you hit some part of the ship");
+            }
+            else{
+                do computer_player.markMiss(x, y); //mark the cell as miss on the computer's grid
+                do Output.printString("You didn't hit any ship, try again on your next turn");
+            }
+            //do player.displayGrid();
+            return true;
+    } else {
+        // Invalid attack; main class should handle retry
+        //do player.displayGrid();
+       return false; 
+    }
+    }
+
+    // Plays a single turn for the computer
+    method void computerTurn(){
+        var Array move;
+        var int x, y;
+        var boolean isHit;
+        // Generate a valid attack move
+        let move = computer.makeMove();
+        let x = move[0]; // Extract x-coordinate
+        let y = move[1]; // Extract y-coordinate
+        // Check if the attack hits a player's ship
+        if (player.isHit(x, y)) {
+            let isHit = true;
+            do player.markHit(x, y); // Mark the cell as hit on the player's grid
+    } else {
+            let isHit = false;
+            do player.markMiss(x, y); // Mark the cell as missed on the player's grid
+    }
+        // Update the computer's internal tracking for the attack
+        do computer.markAttackResult(x, y, isHit);
+       // do computer.displayGrid();
+        return;
+    }
+
+    // Checks if the game is over
+    method boolean isGameOver(){
+         var Player computer_player;
+         let computer_player = computer.getComputerPlayer();
+        // Check if the player's ships are all sunk
+        if (~(player.hasShipsRemaining())) {
+            return true; // The player lost, game is over
+            }
+        // Check if the computer's ships are all sunk
+        if (~(computer_player.hasShipsRemaining())) {
+            return true; // The computer lost, game is over
+        }
+        return false; // Both players still have ships, game continues
+        }
+    
+
+    // Displays the game state (optional for debugging or visuals)
+    method void displayGameState(){
+        return;
+    }
+
+    // Ends the game and declares the winner
+    method boolean endGame(){ //return true if the player won, false if the computer won
+        // Check if the player has any ships remaining
+        if (~(player.hasShipsRemaining())) {
+            // Player lost
+            return true; 
+        }
+        else{
+            return false;
+
+        }
+    // Game is now over, no further actions
+    }
+}

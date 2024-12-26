@@ -1,0 +1,119 @@
+class Player {
+    // The Player class represents a player in the Battleship game. It manages the player’s grid, ships, 
+    //and interactions during gameplay, such as placing ships, marking hits and misses, and checking for remaining ships.
+    
+    field Array ships;        // Array of Ship objects representing the player's ships
+    field Grid grid;          // The player's grid
+    field int shipCount;      // Number of ships the player has
+    field Array attackGrid;   // A grid to track the player's previous attacks
+
+    // Constructor
+    constructor Player new(int num_ships, int gridSize){
+        let shipCount = num_ships;
+        let grid = Grid.new(gridSize);
+        return this;
+    }
+
+    // Places a ship for the player
+    method void placeShip(Ship ship, int startX, int startY, boolean vertical){
+        // Check if the ship can be placed on the grid
+        var int i;
+        let i = 0;
+        if (grid.canPlaceShip(startX, startY, ship.getSize(), vertical)) {
+            // Place the ship on the grid
+            do grid.placeShip(startX, startY, ship.getSize(), vertical);
+            // Set the ship's coordinates
+            do ship.setCoordinates(startX, startY, vertical);
+            // Add the ship to the player's ships
+            while (i < shipCount) {
+            if (ships[i] = null) { // Find an empty slot in the ships array
+                let ships[i] = ship;
+                return;
+            }
+            let i = i + 1;
+            }
+        }
+        return;
+        }
+
+    // Checks if a cell is a hit and mark it accordingly 
+    method boolean isHit(int x, int y){
+        var int i;
+        var Ship currentShip;
+        let i =0; 
+        while (i < shipCount){
+            let currentShip = ships[i];
+            if (~(currentShip = null)) { // Check if the ship exists
+                 if (currentShip.isHit(x, y)) { // Call the isHit method on the ship
+                    return true;
+                }
+            }
+            let i = i+1; 
+        }
+        return false;  
+    }
+
+    // Marks a cell as a hit
+    method void markHit(int x, int y){
+        do grid.markHit(x,y);
+        return;
+    }
+
+    // Marks a cell as a miss
+    method void markMiss(int x, int y){
+        do grid.markMiss(x,y);
+        return;
+    }
+
+    // Checks if the player has any ships remaining
+    method boolean hasShipsRemaining(){
+        var int i;
+        var Ship currentShip;
+        let i = 0;
+        while (i < shipCount) {
+            let currentShip = ships[i];
+            if (~(currentShip= null)) { // Check if the ship exists
+                if (~(currentShip.isSunk())) { // If the ship is not sunk
+                    return true;
+                }
+            }
+            let i = i + 1;
+        }
+        return false; // All ships are sunk
+    }
+
+    method boolean isValidAttack(int x, int y){
+        // Check if the coordinates are within bounds
+        if ((x < 0) | (x >grid.getSize()) | (y < 0) | (y > grid.getSize()) | (x =grid.getSize()) | (y = grid.getSize())) {
+            return false; // Out of bounds
+        }
+        // Check if the cell has already been attacked
+        if (~(attackGrid[y * grid.getSize() + x]) = 0) { // 0 means not attacked- if the cell is not 0-return false
+            return false; // Already attacked
+        }
+        return true; // Valid move
+    }
+
+    // Displays the player's grid
+    method void displayGrid(){
+        do grid.displayGrid();
+        return;
+    }
+
+    // Retrieves a specific ship
+    method Ship getShip(int index){
+        return ships[index];
+    }
+
+    method Ship getShipNumber(){
+        return shipCount;
+    }
+
+    method Array getShips(){
+        return ships;
+    }
+
+    method Grid getPlayerGrid(){
+        return grid;
+    }
+}

@@ -1,0 +1,281 @@
+function Player.new 0
+    push constant 4
+    call Memory.alloc 1
+    pop pointer 0
+    push argument 0
+    pop this 2
+    push argument 1
+    call Grid.new 1
+    pop this 1
+    push pointer 0
+    return
+function Player.placeShip 1
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+    push this 1
+    push argument 2
+    push argument 3
+    push argument 1
+    call Ship.getSize 1
+    push argument 4
+    call Grid.canPlaceShip 5
+    not
+    if-goto Player_1
+    push this 1
+    push argument 2
+    push argument 3
+    push argument 1
+    call Ship.getSize 1
+    push argument 4
+    call Grid.placeShip 5
+    pop temp 0
+    push argument 1
+    push argument 2
+    push argument 3
+    push argument 4
+    call Ship.setCoordinates 4
+    pop temp 0
+label Player_2
+    push local 0
+    push this 2
+    lt
+    not
+    if-goto Player_3
+    push local 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    push constant 0
+    eq
+    not
+    if-goto Player_5
+    push local 0
+    push this 0
+    add
+    push argument 1
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push constant 0
+    return
+    goto Player_4
+label Player_5
+label Player_4
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Player_2
+label Player_3
+    goto Player_0
+label Player_1
+label Player_0
+    push constant 0
+    return
+function Player.isHit 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Player_6
+    push local 0
+    push this 2
+    lt
+    not
+    if-goto Player_7
+    push local 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    push constant 0
+    eq
+    not
+    not
+    if-goto Player_9
+    push local 1
+    push argument 1
+    push argument 2
+    call Ship.isHit 3
+    not
+    if-goto Player_11
+    push constant 1
+    neg
+    return
+    goto Player_10
+label Player_11
+label Player_10
+    goto Player_8
+label Player_9
+label Player_8
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Player_6
+label Player_7
+    push constant 0
+    return
+function Player.markHit 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    push argument 1
+    push argument 2
+    call Grid.markHit 3
+    pop temp 0
+    push constant 0
+    return
+function Player.markMiss 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    push argument 1
+    push argument 2
+    call Grid.markMiss 3
+    pop temp 0
+    push constant 0
+    return
+function Player.hasShipsRemaining 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Player_12
+    push local 0
+    push this 2
+    lt
+    not
+    if-goto Player_13
+    push local 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    pop local 1
+    push local 1
+    push constant 0
+    eq
+    not
+    not
+    if-goto Player_15
+    push local 1
+    call Ship.isSunk 1
+    not
+    not
+    if-goto Player_17
+    push constant 1
+    neg
+    return
+    goto Player_16
+label Player_17
+label Player_16
+    goto Player_14
+label Player_15
+label Player_14
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Player_12
+label Player_13
+    push constant 0
+    return
+function Player.isValidAttack 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    push constant 0
+    lt
+    push argument 1
+    push this 1
+    call Grid.getSize 1
+    gt
+    or
+    push argument 2
+    push constant 0
+    lt
+    or
+    push argument 2
+    push this 1
+    call Grid.getSize 1
+    gt
+    or
+    push argument 1
+    push this 1
+    call Grid.getSize 1
+    eq
+    or
+    push argument 2
+    push this 1
+    call Grid.getSize 1
+    eq
+    or
+    not
+    if-goto Player_19
+    push constant 0
+    return
+    goto Player_18
+label Player_19
+label Player_18
+    push argument 2
+    push this 1
+    call Grid.getSize 1
+    call Math.multiply 2
+    push argument 1
+    add
+    push this 3
+    add
+    pop pointer 1
+    push that 0
+    not
+    push constant 0
+    eq
+    not
+    if-goto Player_21
+    push constant 0
+    return
+    goto Player_20
+label Player_21
+label Player_20
+    push constant 1
+    neg
+    return
+function Player.displayGrid 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    call Grid.displayGrid 1
+    pop temp 0
+    push constant 0
+    return
+function Player.getShip 0
+    push argument 0
+    pop pointer 0
+    push argument 1
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    return
+function Player.getShipNumber 0
+    push argument 0
+    pop pointer 0
+    push this 2
+    return
+function Player.getShips 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    return
+function Player.getPlayerGrid 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    return

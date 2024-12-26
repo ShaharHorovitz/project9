@@ -1,0 +1,60 @@
+class Main {
+    function void main() {
+        var Game game;
+        var Array playerCoordinates;
+        var int x, y;
+        var boolean gameInitialized;
+        var boolean playerTurnValid;
+        var boolean playerWon;
+
+        // Step 1: Initialize the game
+        let game = Game.new(3, 5); // Create a game with 1 ship and a 5x5 grid
+        let playerCoordinates = Array.new(3); // Provide player coordinates
+        // Predefined player ship positions for testing (x, y, orientation)
+        let playerCoordinates[0] = 101; // Ship 1: (x=1, y=0, vertical)
+        let playerCoordinates[1] = 203; // Ship 2: (x=2, y=0, horizontal)
+        let playerCoordinates[2] = 304; // Ship 3: (x=3, y=0, vertical)
+        //let playerCoordinates[3] = 410; // Ship 4: (x=4, y=0, horizontal)
+        //let playerCoordinates[4] = 504; // Ship 5: (x=5, y=0, vertical)
+
+        let gameInitialized = game.initialize(playerCoordinates);
+
+        if (~gameInitialized) {
+            do Output.printString("Failed to initialize the game. Invalid player coordinates");
+            return; // Exit the game if initialization fails
+        }
+
+        do Output.printString("Game initialized successfully!");
+
+        // Step 2: Play the game
+        while (~game.isGameOver()) {
+            // Player's turn
+            let x = Keyboard.readInt("Player's turn: Enter X coordinate for attack: ");
+            let y = Keyboard.readInt("Enter Y coordinate for attack: ");
+            do Screen.clearScreen();
+            let playerTurnValid = game.playerTurn(x, y);
+            if (~playerTurnValid) {
+                do Output.printString("Invalid move! Try again.");
+                let x = Keyboard.readInt("Player's turn: Enter X coordinate for attack: ");
+                let y = Keyboard.readInt("Enter Y coordinate for attack: ");
+                let playerTurnValid = game.playerTurn(x, y);
+                do Screen.clearScreen();
+            }
+            // Computer's turn
+            do game.computerTurn();
+
+            // Optional: Display game state for debugging
+            // do game.displayGameState();
+        }
+
+        // Step 3: End the game and declare the winner
+        let playerWon = game.endGame();
+
+        if (playerWon) {
+            do Output.printString("Congratulations! You won the game!");
+        } else {
+            do Output.printString("Game over. The computer won.");
+        }
+
+        return; // End the program
+    }}

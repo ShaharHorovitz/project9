@@ -1,0 +1,455 @@
+function Grid.new 0
+    push constant 2
+    call Memory.alloc 1
+    pop pointer 0
+    push argument 0
+    push argument 0
+    call Math.multiply 2
+    call Array.new 1
+    pop this 0
+    push argument 0
+    pop this 1
+    push pointer 0
+    return
+function Grid.getSize 0
+    push argument 0
+    pop pointer 0
+    push this 1
+    return
+function Grid.canPlaceShip 1
+    push argument 0
+    pop pointer 0
+    push argument 4
+    not
+    if-goto Grid_1
+    push argument 2
+    push argument 3
+    add
+    push constant 1
+    sub
+    push this 1
+    gt
+    push argument 2
+    push argument 3
+    add
+    push constant 1
+    sub
+    or
+    push this 1
+    eq
+    not
+    if-goto Grid_3
+    push constant 0
+    return
+    goto Grid_2
+label Grid_3
+label Grid_2
+    goto Grid_0
+label Grid_1
+    push argument 1
+    push argument 3
+    add
+    push constant 1
+    sub
+    push this 1
+    gt
+    push argument 1
+    push argument 3
+    add
+    push constant 1
+    sub
+    or
+    push this 1
+    eq
+    not
+    if-goto Grid_5
+    push constant 0
+    return
+    goto Grid_4
+label Grid_5
+label Grid_4
+label Grid_0
+    push constant 0
+    pop local 0
+label Grid_6
+    push local 0
+    push argument 3
+    lt
+    not
+    if-goto Grid_7
+    push argument 4
+    not
+    if-goto Grid_9
+    push argument 2
+    push local 0
+    add
+    push this 1
+    call Math.multiply 2
+    push argument 1
+    add
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    push constant 0
+    gt
+    not
+    if-goto Grid_11
+    push constant 0
+    return
+    goto Grid_10
+label Grid_11
+label Grid_10
+    goto Grid_8
+label Grid_9
+    push argument 2
+    push this 1
+    call Math.multiply 2
+    push argument 1
+    add
+    push local 0
+    add
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    push constant 0
+    gt
+    not
+    if-goto Grid_13
+    push constant 0
+    return
+    goto Grid_12
+label Grid_13
+label Grid_12
+label Grid_8
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Grid_6
+label Grid_7
+    push constant 1
+    neg
+    return
+function Grid.placeShip 1
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    push argument 1
+    push argument 2
+    push argument 3
+    push argument 4
+    call Grid.canPlaceShip 5
+    not
+    if-goto Grid_15
+    push constant 0
+    pop local 0
+label Grid_16
+    push local 0
+    push constant 0
+    lt
+    not
+    if-goto Grid_17
+    push argument 4
+    not
+    if-goto Grid_19
+    push argument 2
+    push local 0
+    add
+    push this 1
+    call Math.multiply 2
+    push argument 1
+    add
+    push this 0
+    add
+    push constant 1
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    goto Grid_18
+label Grid_19
+    push argument 2
+    push local 0
+    add
+    push this 1
+    call Math.multiply 2
+    push argument 1
+    add
+    push this 0
+    add
+    push constant 1
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+label Grid_18
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Grid_16
+label Grid_17
+    push constant 0
+    return
+    goto Grid_14
+label Grid_15
+label Grid_14
+    push constant 0
+    return
+function Grid.isHit 0
+    push argument 0
+    pop pointer 0
+    push argument 2
+    push this 1
+    call Math.multiply 2
+    push argument 1
+    add
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    push constant 1
+    eq
+    not
+    if-goto Grid_21
+    push constant 1
+    neg
+    return
+    goto Grid_20
+label Grid_21
+    push constant 0
+    return
+label Grid_20
+function Grid.markHit 0
+    push argument 0
+    pop pointer 0
+    push argument 2
+    push this 1
+    call Math.multiply 2
+    push argument 1
+    add
+    push this 0
+    add
+    push constant 2
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push constant 0
+    return
+function Grid.markMiss 0
+    push argument 0
+    pop pointer 0
+    push argument 2
+    push this 1
+    call Math.multiply 2
+    push argument 1
+    add
+    push this 0
+    add
+    push constant 3
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push constant 0
+    return
+function Grid.hasShipsRemaining 1
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Grid_22
+    push local 0
+    push this 1
+    lt
+    push this 1
+    call Math.multiply 2
+    not
+    if-goto Grid_23
+    push local 0
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    push constant 1
+    eq
+    not
+    if-goto Grid_25
+    push constant 1
+    neg
+    return
+    goto Grid_24
+label Grid_25
+label Grid_24
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Grid_22
+label Grid_23
+    push constant 0
+    return
+function Grid.displayGrid 6
+    push argument 0
+    pop pointer 0
+    push constant 10
+    pop local 0
+    push constant 0
+    pop local 1
+label Grid_26
+    push local 1
+    push this 1
+    lt
+    not
+    if-goto Grid_27
+    push constant 0
+    pop local 2
+label Grid_28
+    push local 2
+    push this 1
+    lt
+    not
+    if-goto Grid_29
+    push local 2
+    push local 0
+    call Math.multiply 2
+    pop local 3
+    push local 1
+    push local 0
+    call Math.multiply 2
+    pop local 4
+    push constant 1
+    neg
+    call Screen.setColor 1
+    pop temp 0
+    push local 3
+    push local 4
+    push local 3
+    push local 0
+    add
+    push constant 1
+    sub
+    push local 4
+    push local 0
+    add
+    push constant 1
+    sub
+    call Screen.drawRectangle 4
+    pop temp 0
+    push local 1
+    push this 1
+    call Math.multiply 2
+    push local 2
+    add
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    pop local 5
+    push local 5
+    push constant 0
+    eq
+    not
+    if-goto Grid_31
+    push constant 1
+    call String.new 1
+    push constant 46
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
+    goto Grid_30
+label Grid_31
+label Grid_30
+    push local 5
+    push constant 1
+    eq
+    not
+    if-goto Grid_33
+    push constant 1
+    call String.new 1
+    push constant 77
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
+    goto Grid_32
+label Grid_33
+label Grid_32
+    push local 5
+    push constant 2
+    eq
+    not
+    if-goto Grid_35
+    push constant 1
+    call String.new 1
+    push constant 72
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
+    goto Grid_34
+label Grid_35
+    push constant 1
+    call String.new 1
+    push constant 63
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
+label Grid_34
+    push local 2
+    push constant 1
+    add
+    pop local 2
+    goto Grid_28
+label Grid_29
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto Grid_26
+label Grid_27
+    push constant 0
+    return
+function Grid.getCellState 0
+    push argument 0
+    pop pointer 0
+    push argument 2
+    push this 1
+    call Math.multiply 2
+    push argument 1
+    add
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    return
+function Grid.resetGrid 1
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label Grid_36
+    push local 0
+    push this 1
+    lt
+    push this 1
+    call Math.multiply 2
+    not
+    if-goto Grid_37
+    push local 0
+    push this 0
+    add
+    push constant 0
+    pop temp 0
+    pop pointer 1
+    push temp 0
+    pop that 0
+    push local 0
+    push constant 1
+    add
+    pop local 0
+    goto Grid_36
+label Grid_37
+    push constant 0
+    return
